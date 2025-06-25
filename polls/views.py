@@ -1,15 +1,11 @@
-from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from polls.filters import PollsFilter#, ChoicesFilter
 from polls.models import Polls, Choices, Votes
-from polls.permissions import IsCreatorOrReadOnly
-from polls.serializers import PollsSerializer, ChoicesSerializer, CreatePollsSerializer, VotesSerializer
+from polls.serializers import  CreatePollsSerializer, VotesSerializer#, PollsSerializer, ChoicesSerializer
 
 
 # Create your views here.

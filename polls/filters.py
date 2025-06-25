@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Polls, Choices
+from .models import Polls#, Choices
 
 
 class PollsFilter(filters.FilterSet):
