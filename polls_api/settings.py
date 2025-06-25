@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
+    #project apps
     'polls.apps.PollsConfig',
     'authentication.apps.AuthenticationConfig'
 ]
