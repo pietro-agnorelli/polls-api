@@ -21,4 +21,4 @@ class Votes(models.Model):
     user = models.ForeignKey('auth.User', related_name='votes', on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('choice', 'user')  # Ensure a user can vote only once per choice
+        unique_together = ('poll', 'user')  # Ensure a user can vote only once per choice

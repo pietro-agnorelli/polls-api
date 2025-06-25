@@ -10,6 +10,12 @@ class ChoicesSerializer(serializers.ModelSerializer):
 
 
 class PollsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Polls
+        fields = ['id', 'question', 'pub_date', 'is_active', 'creator']
+        read_only_fields = ['pub_date', 'creator']
+
+class CreatePollsSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.username')
     choices = ChoicesSerializer(many=True, read_only=True)
 
