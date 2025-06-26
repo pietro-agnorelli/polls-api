@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from polls.filters import PollsFilter#, ChoicesFilter
@@ -15,7 +15,7 @@ class CreatePollView(CreateAPIView):
     queryset = Polls.objects.all()
     permission_classes = [IsAuthenticated]
 
-class ListPollsView(ListAPIView):
+class ListPollsView(RetrieveUpdateDestroyAPIView):
     serializer_class = CreatePollsSerializer
     queryset = Polls.objects.all()
     filterset_class = PollsFilter
