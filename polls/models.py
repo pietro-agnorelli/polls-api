@@ -7,7 +7,7 @@ class Polls(models.Model):
     question = models.CharField(max_length=500)
     pub_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    creator = models.ForeignKey('auth.User', related_name='polls', on_delete=models.CASCADE)
+    creator = models.ForeignKey('authentication.PollsUser', related_name='polls', on_delete=models.CASCADE)
 
 
 class Choices(models.Model):
@@ -18,7 +18,7 @@ class Choices(models.Model):
 class Votes(models.Model):
     poll = models.ForeignKey(Polls, related_name='votes', on_delete=models.CASCADE)
     choice = models.ForeignKey(Choices, related_name='votes', on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', related_name='votes', on_delete=models.CASCADE)
+    user = models.ForeignKey('authentication.PollsUser', related_name='votes', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('poll', 'user')  # Ensure a user can vote only once per choice

@@ -3,32 +3,53 @@ from .models import Polls, Choices, Votes
 
 
 class ChoicesSerializer(serializers.ModelSerializer):
-    poll = serializers.PrimaryKeyRelatedField(queryset=Polls.objects.all())
+    #poll = serializers.PrimaryKeyRelatedField(queryset=Polls.objects.all())
     class Meta:
         model = Choices
-        fields = ['id', 'poll', 'choice_text']
+        fields = ['id',  'choice_text']
+        #exclude = ['poll']
 
-
+'''
 class PollsSerializer(serializers.ModelSerializer):
+    creator = serializers.ReadOnlyField(source='creator.username')
     class Meta:
         model = Polls
         fields = ['id', 'question', 'pub_date', 'is_active', 'creator']
         read_only_fields = ['pub_date', 'creator']
+'''
 
-class CreatePollsSerializer(serializers.ModelSerializer):
+class PollsChoicesSerializer(serializers.ModelSerializer):
+    choices = ChoicesSerializer(many=True, required=False)
     creator = serializers.ReadOnlyField(source='creator.username')
-    choices = ChoicesSerializer(many=True, read_only=True)
 
     class Meta:
         model = Polls
-        fields = ['id', 'question', 'is_active', 'creator', 'choices']
+        fields = ['id', 'question', 'pub_date', 'is_active', 'creator', 'choices']
+        read_only_fields = ['pub_date', 'creator']
+
+    def validate(self, attrs):
+        attrs['creator'] = self.context['request'].user
+        return attrs
 
     def create(self, validated_data):
-        choices_data = validated_data.pop('choices')
+        choices_data = validated_data.pop('choices', [])
         poll = Polls.objects.create(**validated_data)
         for choice_data in choices_data:
             Choices.objects.create(poll=poll, **choice_data)
         return poll
+
+    def update(self, instance, validated_data):
+        choices_data = self.context['request'].data.get('choices', [])
+        instance = super().update(instance, validated_data)
+
+        if choices_data:
+            # Rimuovi le vecchie scelte
+            instance.choices.all().delete()
+            # Crea le nuove scelte
+            for choice_data in choices_data:
+                Choices.objects.create(poll=instance, **choice_data)
+
+        return instance
 
 
 class VotesSerializer(serializers.ModelSerializer):
@@ -39,3 +60,7 @@ class VotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Votes
         fields = ['id', 'poll', 'choice', 'user']
+
+    def validate(self, attrs):
+        attrs['user'] = self.context['request'].user
+        return attrs
