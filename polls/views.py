@@ -5,10 +5,9 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpd
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from polls.models import Polls, Choices, Votes
 from polls.permissions import IsCreatorOrReadOnly
-from polls.serializers import VotesSerializer, PollsChoicesSerializer, ChoicesSerializer
+from polls.serializers import VotesSerializer, PollsChoicesSerializer
 
 
-# Create your views here.
 
 class ListCreatePollView(ListCreateAPIView):
     serializer_class = PollsChoicesSerializer
