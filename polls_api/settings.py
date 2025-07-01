@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xr=(6-qs9+1hj0u5vvjp9@2kt*ei@npl-wtljnbse9e(f#gfwt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -73,7 +73,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'polls_api.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS= ['*']
 CORS_ALLOW_CREDENTIALS = True
 
 
@@ -108,11 +107,11 @@ os.environ.setdefault("PGPORT", "5432")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ["PGDATABASE"],
-        'USER': os.environ["PGUSER"],
-        'PASSWORD': os.environ["PGPASSWORD"],
-        'HOST': os.environ["PGHOST"],
-        'PORT': os.environ["PGPORT"],
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'FZdjrKPfKXhhpfrstBqjZLbyymYJmHTs',
+        'HOST': 'postgres.railway.internal',
+        'PORT': '5432',
     }
 }
 
