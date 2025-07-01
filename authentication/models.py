@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from polls.models import Polls
 
 
 # Create your models here.

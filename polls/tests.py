@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from polls import views
 from django.urls import reverse
-# ...
 
 class TestPoll(APITestCase):
     def setUp(self):

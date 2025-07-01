@@ -3,20 +3,11 @@ from .models import Polls, Choices, Votes
 
 
 class ChoicesSerializer(serializers.ModelSerializer):
-    #poll = serializers.PrimaryKeyRelatedField(queryset=Polls.objects.all())
+    poll = serializers.PrimaryKeyRelatedField(queryset=Polls.objects.all())
     class Meta:
         model = Choices
-        fields = ['id',  'choice_text']
-        #exclude = ['poll']
+        fields = ['id',  'choice_text', 'poll']
 
-'''
-class PollsSerializer(serializers.ModelSerializer):
-    creator = serializers.ReadOnlyField(source='creator.username')
-    class Meta:
-        model = Polls
-        fields = ['id', 'question', 'pub_date', 'is_active', 'creator']
-        read_only_fields = ['pub_date', 'creator']
-'''
 
 class PollsChoicesSerializer(serializers.ModelSerializer):
     choices = ChoicesSerializer(many=True, required=False)
@@ -43,9 +34,7 @@ class PollsChoicesSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
 
         if choices_data:
-            # Rimuovi le vecchie scelte
             instance.choices.all().delete()
-            # Crea le nuove scelte
             for choice_data in choices_data:
                 Choices.objects.create(poll=instance, **choice_data)
 

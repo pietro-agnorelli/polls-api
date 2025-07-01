@@ -1,10 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, \
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, \
     ListCreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-
-from polls.filters import PollsFilter#, ChoicesFilter
 from polls.models import Polls, Choices, Votes
 from polls.permissions import IsCreatorOrReadOnly
 from polls.serializers import VotesSerializer, PollsChoicesSerializer, ChoicesSerializer
@@ -22,45 +20,7 @@ class DetailPollView(RetrieveUpdateDestroyAPIView):
     serializer_class = PollsChoicesSerializer
     queryset = Polls.objects.all()
     permission_classes = [IsCreatorOrReadOnly]
-'''
-class DetailPollsView(GenericAPIView):
-    permission_classes = [IsCreatorOrReadOnly]
 
-    def get(self, request, *args, **kwargs):
-        try:
-            poll = Polls.objects.get(id=kwargs['pk'])
-        except Polls.DoesNotExist:
-            return Response({"error": "Poll not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = PollsSerializer(poll)
-        choices = Choices.objects.filter(poll=poll)
-        choices_serializer = ChoicesSerializer(choices, many=True)
-        response = {'poll': serializer.data, 'choices': choices_serializer.data}
-        return Response(response, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        try:
-            poll = Polls.objects.get(id=kwargs['pk'])
-        except Polls.DoesNotExist:
-            return Response({"error": "Poll not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = ChoicesSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(poll=kwargs['pk'])
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def put(self, request, *args, **kwargs):
-        try:
-            poll = Polls.objects.get(id=kwargs['pk'])
-        except Polls.DoesNotExist:
-            return Response({"error": "Poll not found"}, status=status.HTTP_404_NOT_FOUND)
-        try:
-            choice = Choices.objects.get(id=request.data.get('id'), poll=poll)
-        except Choices.DoesNotExist:
-            return Response({"error": "Choice not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = ChoicesSerializer(choice, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-'''
 
 class VoteView(GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -86,8 +46,6 @@ class VoteView(GenericAPIView):
             existing_vote.delete()
         serializer.save()
         return Response({"message": "Vote recorded successfully"}, status=status.HTTP_201_CREATED)
-
-
 
 
 class ResultsView(RetrieveAPIView):
