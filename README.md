@@ -1,6 +1,6 @@
 This client is used to manage a simple polling sistem, in which authenticated users can create polls and vote, while results and a list of all polls is visible to every user.
 Authenticaton is implemented using django REST framework token authentication.
-the following is a list of endpoints with request methods and functionalities:
+The following is a list of endpoints with request methods and functionalities:
 | ENDPOINT  | HTTP METHOD | FUNCTION |
 | --- | --- | ------- |
 | /api/v1/auth/register/ | POST  | allows registration of new users, returns auth token |
